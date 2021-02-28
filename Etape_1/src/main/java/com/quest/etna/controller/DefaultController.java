@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DefaultController {
 
-    @GetMapping(value = "testSuccess")
+    @GetMapping(value = "/testSuccess")
     @ResponseStatus(code = HttpStatus.OK)
     public String testSuccess() {
         return "success";
