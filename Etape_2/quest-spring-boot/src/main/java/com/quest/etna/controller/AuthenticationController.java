@@ -16,18 +16,20 @@ public class AuthenticationController {
 
     @PostMapping(value = "/register")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity<UserDetails> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody User user) {
 
         User foundedUser = _userRepository.getUserByUsername(user.getUsername());
         if (null != foundedUser)
-            return new ResponseEntity("Already exist", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Already exist", HttpStatus.CONFLICT);
 
         try {
+            if (null == user.getUsername() || null == user.getPassword())
+                throw new Exception("There is no username, or no password");
             user = _userRepository.save(user);
             UserDetails userDetails = new UserDetails(user.getUsername(), user.getRole());
-            return new ResponseEntity(userDetails, HttpStatus.CREATED);
+            return new ResponseEntity<>(userDetails, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
