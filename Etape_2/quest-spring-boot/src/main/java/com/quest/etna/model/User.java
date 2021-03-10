@@ -21,6 +21,7 @@ public class User {
     @NotNull
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_USER;
 
     private Date creationDate;
