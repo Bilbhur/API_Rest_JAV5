@@ -3,6 +3,7 @@ package com.quest.etna.model;
 
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
@@ -17,10 +18,11 @@ public class User {
     private int id;
 
     @NotNull
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
 
     @NotNull
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -29,7 +31,7 @@ public class User {
     @CreationTimestamp
     private Date creationDate;
 
-
+    @UpdateTimestamp
     private Date updatedDate;
 
     public User() {

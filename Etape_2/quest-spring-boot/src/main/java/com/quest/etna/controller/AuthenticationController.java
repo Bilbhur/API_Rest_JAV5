@@ -23,7 +23,7 @@ public class AuthenticationController {
             if (null == user.getUsername() || null == user.getPassword())
                 return new ResponseEntity<>("{\"error\" : \"Server Error\"}", HttpStatus.INTERNAL_SERVER_ERROR);
 
-            User foundedUser = userRepository.getUserByUsername(user.getUsername());
+            User foundedUser = userRepository.findByUsername(user.getUsername());
             if (null != foundedUser)
                 return new ResponseEntity<>("{\"error\" : \"Already exists\"}", HttpStatus.CONFLICT);
 
