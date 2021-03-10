@@ -2,6 +2,8 @@ package com.quest.etna.model;
 
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,7 +26,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_USER;
 
+    @CreationTimestamp
     private Date creationDate;
+
 
     private Date updatedDate;
 
@@ -81,11 +85,11 @@ public class User {
         this.creationDate = creationDate;
     }
 
-    public Date getUpdateDate() {
+    public Date getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdatedDate(Date updateDate) {
         this.updatedDate = updateDate;
     }
 
@@ -106,11 +110,11 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) && getUsername().equals(user.getUsername()) && getPassword().equals(user.getPassword()) && getRole() == user.getRole() && Objects.equals(getCreationDate(), user.getCreationDate()) && Objects.equals(getUpdateDate(), user.getUpdateDate());
+        return Objects.equals(getId(), user.getId()) && getUsername().equals(user.getUsername()) && getPassword().equals(user.getPassword()) && getRole() == user.getRole() && Objects.equals(getCreationDate(), user.getCreationDate()) && Objects.equals(getUpdatedDate(), user.getUpdatedDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), getRole(), getCreationDate(), getUpdateDate());
+        return Objects.hash(getId(), getUsername(), getPassword(), getRole(), getCreationDate(), getUpdatedDate());
     }
 }

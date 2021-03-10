@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     @Autowired
-    private UserRepository _userRepository;
+    private UserRepository userRepository;
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<?> register(@RequestBody User user) {
 
-        User foundedUser = _userRepository.getUserByUsername(user.getUsername());
+        User foundedUser = userRepository.getUserByUsername(user.getUsername());
         if (null != foundedUser)
-            return new ResponseEntity<>("Already exist", HttpStatus.CONFLICT);
+            return new ResponseEntity<>("{\"error\" : \"Already exists\"}", HttpStatus.CONFLICT);
 
         try {
             if (null == user.getUsername() || null == user.getPassword())
                 throw new Exception("There is no username, or no password");
-            user = _userRepository.save(user);
+            user = userRepository.save(user);
             UserDetails userDetails = new UserDetails(user.getUsername(), user.getRole());
             return new ResponseEntity<>(userDetails, HttpStatus.CREATED);
         } catch (Exception e) {
