@@ -12,7 +12,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
 
     @NotNull
     @Column(unique = true)
@@ -31,7 +31,7 @@ public class User {
 
     }
 
-    public User(Long id, String username, String password, UserRole role, Date creationDate, Date updateDate) {
+    public User(int id, String username, String password, UserRole role, Date creationDate, Date updateDate) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -40,11 +40,11 @@ public class User {
         this.updateDate = updateDate;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
