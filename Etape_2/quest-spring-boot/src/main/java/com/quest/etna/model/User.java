@@ -26,7 +26,7 @@ public class User {
 
     private Date creationDate;
 
-    private Date updateDate;
+    private Date updatedDate;
 
     public User() {
 
@@ -38,7 +38,7 @@ public class User {
         this.password = password;
         this.role = role;
         this.creationDate = creationDate;
-        this.updateDate = updateDate;
+        this.updatedDate = updateDate;
     }
 
     public int getId() {
@@ -82,11 +82,11 @@ public class User {
     }
 
     public Date getUpdateDate() {
-        return updateDate;
+        return updatedDate;
     }
 
     public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+        this.updatedDate = updateDate;
     }
 
     @Override
@@ -97,7 +97,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", creationDate=" + creationDate +
-                ", updateDate=" + updateDate +
+                ", updateDate=" + updatedDate +
                 '}';
     }
 
