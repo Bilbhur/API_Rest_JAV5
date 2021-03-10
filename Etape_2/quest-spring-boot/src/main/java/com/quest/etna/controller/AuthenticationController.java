@@ -19,13 +19,14 @@ public class AuthenticationController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<?> register(@RequestBody User user) {
 
-        User foundedUser = userRepository.getUserByUsername(user.getUsername());
-        if (null != foundedUser)
-            return new ResponseEntity<>("{\"error\" : \"Already exists\"}", HttpStatus.CONFLICT);
-
         try {
             if (null == user.getUsername() || null == user.getPassword())
-                throw new Exception("There is no username, or no password");
+                return new ResponseEntity<>("{\"error\" : \"Server Error\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+
+            User foundedUser = userRepository.getUserByUsername(user.getUsername());
+            if (null != foundedUser)
+                return new ResponseEntity<>("{\"error\" : \"Already exists\"}", HttpStatus.CONFLICT);
+
             user = userRepository.save(user);
             UserDetails userDetails = new UserDetails(user.getUsername(), user.getRole());
             return new ResponseEntity<>(userDetails, HttpStatus.CREATED);
