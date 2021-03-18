@@ -1,5 +1,6 @@
 package com.quest.etna.config;
 
+import com.quest.etna.model.JwtUserDetails;
 import com.quest.etna.model.User;
 import com.quest.etna.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +25,37 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private UserRepository userRepository;
+    private JwtUserDetailsService jwtUserDetailsService;
 
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String authTokenHeader = httpServletRequest.getHeader("Authorization");
-        String username = jwtTokenUtil.getUsernameFromToken(authTokenHeader);
-        User user = userRepository.findByUsername(username);
 
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        String authToken = httpServletRequest.getHeader("Authorization");
 
-        SecurityContext sc = SecurityContextHolder.getContext();
-        sc.setAuthentication(auth);
+        try {
+            if (null != authToken) {
+                authToken = authToken.replace("Bearer", "");
+
+                String username = jwtTokenUtil.getUsernameFromToken(authToken);
+                JwtUserDetails jwtUserDetails = (JwtUserDetails) jwtUserDetailsService.loadUserByUsername(username);
+
+                if (jwtTokenUtil.validateToken(authToken, jwtUserDetails)) {
+                    UsernamePasswordAuthenticationToken unameAuthToken = new UsernamePasswordAuthenticationToken(jwtUserDetails.getUsername(), jwtUserDetails.getPassword());
+//                    Authentication auth = authenticationManager.authenticate(unameAuthToken);
+
+
+                    SecurityContext sc = SecurityContextHolder.getContext();
+                    sc.setAuthentication(authenticationManager.authenticate(unameAuthToken));
+                }
+
+            }
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
+        }
+
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
