@@ -62,13 +62,18 @@ public class AuthenticationController {
 
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> Authenticate(@RequestBody User user) {
-        UsernamePasswordAuthenticationToken tok = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-        authenticationManager.authenticate(tok);
+        try {
+            UsernamePasswordAuthenticationToken tok = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+            authenticationManager.authenticate(tok);
 
-        JwtUserDetails jwtUD = new JwtUserDetails(userRepository.findByUsername(user.getUsername()));
-        String token = jwtTokenUtil.generateToken(jwtUD);
+            JwtUserDetails jwtUD = new JwtUserDetails(userRepository.findByUsername(user.getUsername()));
+            String token = jwtTokenUtil.generateToken(jwtUD);
 
-        return ResponseEntity.ok("{\"token\" : \"" + token + "\"}");
+            return ResponseEntity.ok("{\"token\" : \"" + token + "\"}");
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @GetMapping(value = "/me")
