@@ -61,7 +61,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/authenticate")
-    public ResponseEntity<?> Authenticate(@RequestBody User user) {
+    public ResponseEntity Authenticate(@RequestBody User user) {
         try {
             UsernamePasswordAuthenticationToken tok = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
             authenticationManager.authenticate(tok);
@@ -71,16 +71,16 @@ public class AuthenticationController {
 
             return ResponseEntity.ok("{\"token\" : \"" + token + "\"}");
         } catch (Exception e) {
-            return new ResponseEntity<>("{\"token\" : \"" + e.getMessage() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("{\"token\" : \"" + e.getMessage() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
     @GetMapping(value = "/me")
-    public ResponseEntity<?> Me() {
+    public ResponseEntity Me() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (null == auth)
-            return new ResponseEntity<>("{\"error\" : \"Unauthorized\"}", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity("{\"error\" : \"Unauthorized\"}", HttpStatus.UNAUTHORIZED);
 
         User u = userRepository.findByUsername(auth.getPrincipal().toString());
 
