@@ -71,7 +71,7 @@ public class AuthenticationController {
 
             return ResponseEntity.ok("{\"token\" : \"" + token + "\"}");
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("{\"token\" : \"" + e.getMessage() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
