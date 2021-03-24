@@ -4,6 +4,7 @@ package com.quest.etna.model;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.mapping.Set;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
@@ -27,6 +28,9 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_USER;
+    
+    @OneToMany(mappedBy="user")
+    private Address address;
 
     @CreationTimestamp
     private Date creationDate;
@@ -38,13 +42,14 @@ public class User {
 
     }
 
-    public User(int id, String username, String password, UserRole role, Date creationDate, Date updateDate) {
+    public User(int id, String username, String password, UserRole role, Address address, Date creationDate, Date updatedDate) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;
+        this.address = address;
         this.creationDate = creationDate;
-        this.updatedDate = updateDate;
+        this.updatedDate = updatedDate;
     }
 
     public int getId() {
@@ -77,6 +82,10 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+    
+    public Address getAddress() {
+    	return address;
     }
 
     public Date getCreationDate() {
