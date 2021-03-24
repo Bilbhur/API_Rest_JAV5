@@ -61,7 +61,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/authenticate")
-    public ResponseEntity Authenticate(@RequestBody User user) {
+    public ResponseEntity authenticate(@RequestBody User user) {
         try {
             UsernamePasswordAuthenticationToken tok = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
             authenticationManager.authenticate(tok);
@@ -77,7 +77,7 @@ public class AuthenticationController {
     }
 
     @GetMapping(value = "/me")
-    public ResponseEntity Me() {
+    public ResponseEntity me() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (null == auth)
             return new ResponseEntity("{\"error\" : \"Unauthorized\"}", HttpStatus.UNAUTHORIZED);
