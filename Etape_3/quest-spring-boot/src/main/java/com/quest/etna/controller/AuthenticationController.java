@@ -77,10 +77,10 @@ public class AuthenticationController {
     }
 
     @GetMapping(value = "/me")
-    public ResponseEntity me() {
+    public ResponseEntity<?> me() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (null == auth)
-            return new ResponseEntity<?>("{\"error\" : \"Unauthorized\"}", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity("{\"error\" : \"Unauthorized\"}", HttpStatus.UNAUTHORIZED);
 
         User u = userRepository.findByUsername(auth.getPrincipal().toString());
 
