@@ -97,7 +97,7 @@ public class Address {
 
     public void setCountry(String country) {
         this.country = country;
-    }   
+    }
 
     // TODO Check si c'est utile
     public User getUser() {
@@ -118,5 +118,32 @@ public class Address {
 
     public void setUpdatedDate(Date updateDate) {
         this.updatedDate = updateDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address)) return false;
+        Address address = (Address) o;
+        return getId() == address.getId() && getStreet().equals(address.getStreet()) && getPostalCode().equals(address.getPostalCode()) && getCity().equals(address.getCity()) && getCountry().equals(address.getCountry()) && Objects.equals(getUser(), address.getUser()) && Objects.equals(getCreationDate(), address.getCreationDate()) && Objects.equals(getUpdatedDate(), address.getUpdatedDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getStreet(), getPostalCode(), getCity(), getCountry(), getUser(), getCreationDate(), getUpdatedDate());
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", street='" + street + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", user=" + user +
+                ", creationDate=" + creationDate +
+                ", updatedDate=" + updatedDate +
+                '}';
     }
 }
