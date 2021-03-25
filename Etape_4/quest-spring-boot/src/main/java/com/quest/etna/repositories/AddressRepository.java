@@ -10,4 +10,10 @@ public interface AddressRepository extends CrudRepository<Address, Integer> {
 
     @Query("SELECT a FROM Address a WHERE a.city = :city")
     Address findAddressByCity(String city);
+    
+    @Query("SELECT a FROM Address a WHERE a.id = :id")
+    Address findAddressById(int id);
+    
+    @Query("SELECT a FROM Address a")
+    Address findAllAddress();
 }
