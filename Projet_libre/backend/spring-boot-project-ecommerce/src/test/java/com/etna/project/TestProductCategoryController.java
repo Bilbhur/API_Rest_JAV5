@@ -4,12 +4,16 @@ import com.etna.project.entity.ProductCategory;
 import com.etna.project.service.ProductCategoryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -24,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ActiveProfiles(value = "test")
 @AutoConfigureMockMvc(addFilters = false)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class TestProductCategoryController {
 
     @Autowired
@@ -33,6 +38,26 @@ public class TestProductCategoryController {
     private ProductCategoryService productCategoryService;
 
     private String baseUrl = "/api/product-category/";
+
+    @Before
+    public void init() {
+        ProductCategory pc = new ProductCategory();
+        pc.setCategoryName("Test category 1");
+        productCategoryService.create(pc);
+
+        pc = new ProductCategory();
+        pc.setCategoryName("Test category 2");
+        productCategoryService.create(pc);
+
+        pc = new ProductCategory();
+        pc.setCategoryName("Test category 3");
+        productCategoryService.create(pc);
+    }
+
+    @After
+    public void clear() {
+
+    }
 
     @Test
     public void getList() throws Exception {
@@ -66,9 +91,11 @@ public class TestProductCategoryController {
     @Test
     public void deleteProductCategory() throws Exception {
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete(baseUrl + "1"))
+                .perform(MockMvcRequestBuilders.delete(baseUrl + "3"))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+
+        getList();
     }
 
 

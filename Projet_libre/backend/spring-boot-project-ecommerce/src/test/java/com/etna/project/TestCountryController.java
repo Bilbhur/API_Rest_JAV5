@@ -4,12 +4,14 @@ import com.etna.project.entity.Country;
 import com.etna.project.service.CountryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -24,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ActiveProfiles(value = "test")
 @AutoConfigureMockMvc(addFilters = false)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class TestCountryController {
 
     @Autowired
@@ -33,6 +36,24 @@ public class TestCountryController {
     protected CountryService countryService;
 
     private String baseUrl = "/api/countries/";
+
+    @Before
+    public void init() {
+        Country country = new Country();
+        country.setCode("PQ");
+        country.setName("Pourquoi");
+        countryService.create(country);
+
+        country = new Country();
+        country.setCode("FR");
+        country.setName("Fraance");
+        countryService.create(country);
+
+        country = new Country();
+        country.setCode("BT");
+        country.setName("Blurth");
+        countryService.create(country);
+    }
 
     @Test
     public void createCountry() throws Exception {
@@ -84,9 +105,8 @@ public class TestCountryController {
 
     @Test
     public void deleteCountry() throws Exception {
-        this.getList();
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete(baseUrl + "1"))
+                .perform(MockMvcRequestBuilders.delete(baseUrl + "3"))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         this.getList();

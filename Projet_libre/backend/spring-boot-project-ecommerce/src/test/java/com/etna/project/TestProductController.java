@@ -8,12 +8,14 @@ import com.etna.project.service.ProductCategoryService;
 import com.etna.project.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -30,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ActiveProfiles(value = "test")
 @AutoConfigureMockMvc(addFilters = false)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class TestProductController {
 
     @Autowired
@@ -42,6 +45,40 @@ public class TestProductController {
     protected ProductCategoryService productCategoryService;
 
     private String baseUrl = "/api/products/";
+
+    @Before
+    public void init() {
+        ProductCategory pc = new ProductCategory();
+        pc.setCategoryName("Test category 1");
+        productCategoryService.create(pc);
+
+        Product product = new Product();
+        product.setDescription("premier produit");
+        product.setCategory(pc);
+        product.setSku("oaisnfoanoin");
+        product.setName("Accélérateur de particules");
+        product.setUnitsInStock(5);
+        product.setActive(true);
+        productService.create(product);
+
+        product = new Product();
+        product.setDescription("second produit");
+        product.setCategory(pc);
+        product.setSku("oaisnfoanoin");
+        product.setName("Perceuse");
+        product.setUnitsInStock(5);
+        product.setActive(true);
+        productService.create(product);
+
+        product = new Product();
+        product.setDescription("troisième produit");
+        product.setCategory(pc);
+        product.setSku("oaisnfoanoin");
+        product.setName("Tasse");
+        product.setUnitsInStock(5);
+        product.setActive(true);
+        productService.create(product);
+    }
 
     @Test
     public void create() throws Exception {
