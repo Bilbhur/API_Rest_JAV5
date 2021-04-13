@@ -2,6 +2,7 @@ package com.etna.project.controller;
 
 import com.etna.project.dao.CountryRepository;
 import com.etna.project.entity.Country;
+import com.etna.project.exception.CustomResourceNotFoundException;
 import com.etna.project.services.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class CountryController {
     public ResponseEntity<Country> getOneById(@PathVariable("id") Integer id) {
         Country country = countryService.getOneById(id);
         if (null == country)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new CustomResourceNotFoundException();
 
         return new ResponseEntity(country, HttpStatus.OK);
     }

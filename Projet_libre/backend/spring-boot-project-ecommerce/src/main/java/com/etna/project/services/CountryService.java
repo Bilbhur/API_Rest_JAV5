@@ -2,6 +2,8 @@ package com.etna.project.services;
 
 import com.etna.project.dao.CountryRepository;
 import com.etna.project.entity.Country;
+import com.etna.project.exception.CustomConflictException;
+import com.etna.project.exception.CustomResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,10 @@ public class CountryService implements IModelService<Country>{
 
     @Override
     public Country create(Country entity) {
+        Country country = countryRepository.getByName(entity.getName());
+        if (null != country)
+            throw new CustomConflictException();
+
         countryRepository.save(entity);
         return entity;
     }
@@ -42,7 +48,8 @@ public class CountryService implements IModelService<Country>{
         Optional<Country> country = countryRepository.findById(id);
 
         if (country.isEmpty())
-            return null;
+            throw new CustomResourceNotFoundException();
+//            return null;
 
         Country countryFound = country.get();
 
@@ -60,13 +67,15 @@ public class CountryService implements IModelService<Country>{
             Optional<Country> country = countryRepository.findById(id);
 
             if (country.isEmpty())
-                return null;
+                throw new CustomResourceNotFoundException();
+//                return null;
 
             Country countryFound = country.get();
 
             countryRepository.delete(countryFound);
         } catch (Exception e) {
-            return false;
+            throw new CustomResourceNotFoundException();
+//            return false;
         }
         return true;
     }
