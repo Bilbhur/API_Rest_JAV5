@@ -29,6 +29,19 @@ public class TestCountryController {
     protected CountryService countryService;
 
     @Test
+    public void createCountry() throws Exception {
+        Country country = new Country();
+        country.setCode("EW");
+        country.setName("Test");
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/countries")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(country)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    @Test
     public void getList() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/countries"))
                 .andDo(print())
@@ -50,24 +63,27 @@ public class TestCountryController {
     }
 
     @Test
-    public void createCountry() throws Exception {
-        Country country = new Country();
-        country.setCode("EW");
-        country.setName("Test");
+    public void updateCountry() throws Exception {
+        int idCountry = 1;
+        Country country = countryService.getOneById(idCountry);
+        country.setName("Ceci est un update");
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/countries")
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/countries/" + idCountry)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(country)))
                 .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
+        this.getList();
     }
 
     @Test
     public void deleteCountry() throws Exception {
+        this.getList();
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/countries/9"))
+                .perform(MockMvcRequestBuilders.delete("/countries/1"))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+        this.getList();
     }
 
     private String asJsonString(Object obj) {
