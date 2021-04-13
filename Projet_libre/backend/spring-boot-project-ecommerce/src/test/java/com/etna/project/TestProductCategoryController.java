@@ -1,11 +1,7 @@
 package com.etna.project;
 
-import com.etna.project.dao.ProductCategoryRepository;
-import com.etna.project.dao.ProductRepository;
-import com.etna.project.entity.Product;
 import com.etna.project.entity.ProductCategory;
 import com.etna.project.service.ProductCategoryService;
-import com.etna.project.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -20,53 +16,23 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.math.BigDecimal;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
 @ActiveProfiles(value = "test")
 @AutoConfigureMockMvc(addFilters = false)
-public class TestProductController {
+public class TestProductCategoryController {
 
     @Autowired
     protected MockMvc mockMvc;
 
     @Autowired
-    protected ProductService productService;
+    private ProductCategoryService productCategoryService;
 
-    @Autowired
-    protected ProductCategoryService productCategoryService;
-
-    private String baseUrl = "/api/products/";
-
-    @Test
-    public void create() throws Exception {
-        ProductCategory pc = new ProductCategory();
-        pc.setCategoryName("Test category");
-        productCategoryService.create(pc);
-
-
-        Product product = new Product();
-        product.setDescription("un produit");
-        product.setCategory(pc);
-        product.setSku("oaisnfoanoin");
-        product.setName("un nom");
-//        product.setUnitPrice();
-        product.setUnitsInStock(5);
-        product.setActive(true);
-//        product.setImageUrl(entity.getImageUrl());
-        product = productService.create(product);
-
-        this.mockMvc
-                .perform(MockMvcRequestBuilders.get(baseUrl + product.getId()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.description").value(product.getDescription()));
-    }
+    private String baseUrl = "/api/product-category/";
 
     @Test
     public void getList() throws Exception {
@@ -85,20 +51,22 @@ public class TestProductController {
     }
 
     @Test
-    public void update() throws Exception {
-        Product p = productService.getOneById(1);
-        p.setDescription("toto le pouet");
+    public void create() throws Exception {
+        ProductCategory pc = new ProductCategory();
+        pc.setCategoryName("Test category");
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put(baseUrl + "1")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(asJsonString(p)))
+        this.mockMvc.perform(MockMvcRequestBuilders.post(baseUrl)
+                .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(pc)))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
+
     @Test
-    public void deleteTheProduct() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.delete(baseUrl + "1"))
+    public void deleteProductCategory() throws Exception {
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.delete(baseUrl + "1"))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }
