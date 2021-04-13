@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -26,11 +27,13 @@ export class CheckoutComponent implements OnInit {
   creditCardYears: number[] = [];
 
   countries: Country[] = [];
+  private countriesUrl = 'http://localhost:8080/api/countries';
 
   constructor(private formBuilder: FormBuilder,
               private ShopFormService: ShopFormService,
               private cartService: CartService,
               private checkoutService: CheckoutService,
+              private httpClient: HttpClient,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -79,7 +82,12 @@ export class CheckoutComponent implements OnInit {
       }
     );
 
-    this.ShopFormService.getCountries().subscribe(
+    // this.ShopFormService.getCountries().subscribe(
+    //   data => {
+    //     this.countries = data;
+    //   }
+    // );
+    this.httpClient.get<any>(this.countriesUrl).subscribe(
       data => {
         this.countries = data;
       }

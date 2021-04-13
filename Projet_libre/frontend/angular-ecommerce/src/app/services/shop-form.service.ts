@@ -9,16 +9,16 @@ import { Country } from '../common/country';
 })
 export class ShopFormService {
 
-  private countriesUrl = 'http://localhost:8080/api/countries';
+  // private countriesUrl = 'http://localhost:8080/api/countries';
 
   constructor(private httpClient: HttpClient) { }
 
-  getCountries(): Observable<Country[]> {
+  // getCountries(): Observable<Country[]> {
 
-    return this.httpClient.get<GetResponseCountries>(this.countriesUrl).pipe(
-      map(response => response._embedded.countries)
-    );
-  }
+  //   return this.httpClient.get<GetResponseCountries>(this.countriesUrl).pipe(
+  //     map(response => response.countries)
+  //   );
+  // }
 
   getCreditCardMonths(startMonth: number): Observable<number[]> {
 
@@ -46,8 +46,8 @@ export class ShopFormService {
   }
 }
 
-interface GetResponseCountries {
-  _embedded: {
-    countries: Country[];
-  }
-}
+// interface GetResponseCountries {
+//   _embedded: {
+//     countries: Country[];
+//   }
+// }
