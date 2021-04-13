@@ -19,7 +19,7 @@ public class CountryController {
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public List<Country> getList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "3") Integer limit) {
+    public List<Country> getList(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer limit) {
         return countryService.getList(page, limit);
     }
 

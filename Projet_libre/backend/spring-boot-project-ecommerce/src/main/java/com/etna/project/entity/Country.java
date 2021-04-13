@@ -12,13 +12,10 @@ import javax.persistence.*;
 public class Country {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="code")
     private String code;
 
-    @Column(name="name")
     private String name;
 }
