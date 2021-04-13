@@ -1,4 +1,4 @@
-package com.etna.project.services;
+package com.etna.project.service;
 
 import java.util.List;
 
