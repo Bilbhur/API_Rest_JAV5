@@ -9,7 +9,7 @@ SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `country`;
 
 CREATE TABLE `country` (
-  `id` smallint unsigned NOT NULL,
+  `id` smallint unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(2) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
