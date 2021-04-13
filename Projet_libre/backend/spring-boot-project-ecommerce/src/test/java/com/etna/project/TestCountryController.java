@@ -28,13 +28,15 @@ public class TestCountryController {
     @Autowired
     protected CountryService countryService;
 
+    private String baseUrl = "/api/countries/";
+
     @Test
     public void createCountry() throws Exception {
         Country country = new Country();
         country.setCode("EW");
         country.setName("Test");
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/countries")
+        this.mockMvc.perform(MockMvcRequestBuilders.post(baseUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(country)))
                 .andDo(print())
@@ -43,21 +45,21 @@ public class TestCountryController {
 
     @Test
     public void getList() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/countries"))
+        this.mockMvc.perform(MockMvcRequestBuilders.get(baseUrl))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
     public void getOneCountry() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/countries/1"))
+        this.mockMvc.perform(MockMvcRequestBuilders.get(baseUrl + "1"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
     public void getOneCountryNotFound() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/countries/99999"))
+        this.mockMvc.perform(MockMvcRequestBuilders.get(baseUrl+ "99999"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -68,7 +70,7 @@ public class TestCountryController {
         Country country = countryService.getOneById(idCountry);
         country.setName("Ceci est un update");
 
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/countries/" + idCountry)
+        this.mockMvc.perform(MockMvcRequestBuilders.put(baseUrl + idCountry)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(country)))
                 .andDo(print())
@@ -80,7 +82,7 @@ public class TestCountryController {
     public void deleteCountry() throws Exception {
         this.getList();
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/countries/1"))
+                .perform(MockMvcRequestBuilders.delete(baseUrl + "1"))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         this.getList();
