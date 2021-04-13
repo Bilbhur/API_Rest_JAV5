@@ -6,6 +6,9 @@ import com.etna.project.entity.JwtUserDetails;
 import com.etna.project.entity.User;
 import com.etna.project.entity.UserDetails;
 import com.etna.project.dao.UserRepository;
+import com.etna.project.exception.CustomConflictException;
+import com.etna.project.exception.CustomInternalServerErrorException;
+import com.etna.project.exception.CustomUnauthorizedException;
 import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +23,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestController
 public class AuthenticationController {
@@ -42,22 +48,19 @@ public class AuthenticationController {
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<?> register(@RequestBody User user) {
-        try {
-            if (null == user.getUsername() || null == user.getPassword())
-                return new ResponseEntity<>("{\"error\" : \"Server Error\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (null == user.getUsername() || null == user.getPassword())
+            throw new CustomInternalServerErrorException();
 
-            User foundedUser = userRepository.findByUsername(user.getUsername());
-            if (null != foundedUser)
-                return new ResponseEntity<>("{\"error\" : \"Already exists\"}", HttpStatus.CONFLICT);
+        User foundedUser = userRepository.getByUsername(user.getUsername());
+        if (null != foundedUser)
+            throw new CustomConflictException();
 
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-            user = userRepository.save(user);
-            UserDetails userDetails = new UserDetails(user.getUsername(), user.getRole());
-            return new ResponseEntity<>(userDetails, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        user = userRepository.save(user);
+        UserDetails userDetails = new UserDetails(user.getUsername(), user.getRole());
+        return new ResponseEntity<>(userDetails, HttpStatus.CREATED);
+
     }
 
     @PostMapping(value = "/authenticate")
@@ -66,12 +69,15 @@ public class AuthenticationController {
             UsernamePasswordAuthenticationToken tok = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
             authenticationManager.authenticate(tok);
 
-            JwtUserDetails jwtUD = new JwtUserDetails(userRepository.findByUsername(user.getUsername()));
+            JwtUserDetails jwtUD = new JwtUserDetails(userRepository.getByUsername(user.getUsername()));
             String token = jwtTokenUtil.generateToken(jwtUD);
 
-            return ResponseEntity.ok("{\"token\" : \"" + token + "\"}");
+            Map<String, Object> body = new LinkedHashMap<>();
+            body.put("token", token);
+
+            return ResponseEntity.ok(body);
         } catch (Exception e) {
-            return new ResponseEntity<>("{\"token\" : \"" + e.getMessage() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new CustomInternalServerErrorException();
         }
 
     }
@@ -80,9 +86,9 @@ public class AuthenticationController {
     public ResponseEntity<?> me() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (null == auth)
-            return new ResponseEntity("{\"error\" : \"Unauthorized\"}", HttpStatus.UNAUTHORIZED);
+            throw new CustomUnauthorizedException();
 
-        User u = userRepository.findByUsername(auth.getPrincipal().toString());
+        User u = userRepository.getByUsername(auth.getPrincipal().toString());
 
         UserDetails userDetails = new UserDetails(u.getUsername(), u.getRole());
 
@@ -90,7 +96,7 @@ public class AuthenticationController {
             return ResponseEntity.ok(userDetails);
         }
         else {
-            return new ResponseEntity<>("{\"error\" : \"Server Error\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new CustomInternalServerErrorException();
         }
     }
 }

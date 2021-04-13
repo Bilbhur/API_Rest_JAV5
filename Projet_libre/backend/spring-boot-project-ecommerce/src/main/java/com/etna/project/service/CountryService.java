@@ -1,4 +1,4 @@
-package com.etna.project.services;
+package com.etna.project.service;
 
 import com.etna.project.dao.CountryRepository;
 import com.etna.project.entity.Country;
@@ -25,12 +25,7 @@ public class CountryService implements IModelService<Country>{
 
     @Override
     public Country getOneById(Integer id) {
-        Optional<Country> country = countryRepository.findById(id);
-
-        if (country.isEmpty())
-            return null;
-
-        return country.get();
+        return countryRepository.findById(id).orElseThrow(CustomResourceNotFoundException::new);
     }
 
     @Override
@@ -45,13 +40,7 @@ public class CountryService implements IModelService<Country>{
 
     @Override
     public Country update(Integer id, Country entity) {
-        Optional<Country> country = countryRepository.findById(id);
-
-        if (country.isEmpty())
-            throw new CustomResourceNotFoundException();
-//            return null;
-
-        Country countryFound = country.get();
+        Country countryFound = countryRepository.findById(id).orElseThrow(CustomResourceNotFoundException::new);
 
         countryFound.setName(entity.getName());
         countryFound.setCode(entity.getCode());
@@ -64,18 +53,11 @@ public class CountryService implements IModelService<Country>{
     @Override
     public Boolean delete(Integer id) {
         try {
-            Optional<Country> country = countryRepository.findById(id);
-
-            if (country.isEmpty())
-                throw new CustomResourceNotFoundException();
-//                return null;
-
-            Country countryFound = country.get();
+            Country countryFound = countryRepository.findById(id).orElseThrow(CustomResourceNotFoundException::new);
 
             countryRepository.delete(countryFound);
         } catch (Exception e) {
             throw new CustomResourceNotFoundException();
-//            return false;
         }
         return true;
     }

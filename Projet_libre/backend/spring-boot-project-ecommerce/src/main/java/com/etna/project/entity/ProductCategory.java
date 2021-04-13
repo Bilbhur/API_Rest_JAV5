@@ -1,5 +1,6 @@
 package com.etna.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 @Table(name="product_category")
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "products"})
 public class ProductCategory {
 
     @Id
