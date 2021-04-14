@@ -41,7 +41,8 @@ export class ProductService {
   }
 
   searchProductsPaginate(thePage: number, thePageSize: number,theKeyword: string): Observable<GetResponseProducts> {
-    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}&page=${thePage}&size=${thePageSize}`;
+    // const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}&page=${thePage}&size=${thePageSize}`;
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}&page=${thePage}&limit=${thePageSize}`;
 
     return this.httpClient.get<GetResponseProducts>(searchUrl);
   } 
@@ -83,8 +84,8 @@ interface GetResponseProducts {
   number: number
 }
 
-interface GetResponseProductCategory {
-  _embedded: {
-    productCategory: ProductCategory[];
-  }
-}
+// interface GetResponseProductCategory {
+//   _embedded: {
+//     productCategory: ProductCategory[];
+//   }
+// }

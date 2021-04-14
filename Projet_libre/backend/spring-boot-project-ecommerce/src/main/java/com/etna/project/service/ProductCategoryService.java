@@ -26,11 +26,6 @@ public class ProductCategoryService implements IModelService<ProductCategory> {
     }
 
     @Override
-    public Page<Product> getListByCategoryId(Long id, Integer page, Integer limit) {
-        return null;
-    }
-
-    @Override
     public ProductCategory getOneById(Integer id) {
         return productCategoryRepository.findById(id.longValue()).orElseThrow(CustomResourceNotFoundException::new);
     }

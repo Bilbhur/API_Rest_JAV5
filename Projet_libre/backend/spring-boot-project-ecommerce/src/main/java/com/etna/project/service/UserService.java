@@ -29,11 +29,6 @@ public class UserService implements IModelService<User>{
     }
 
     @Override
-    public Page<Product> getListByCategoryId(Long id, Integer page, Integer limit) {
-        return null;
-    }
-
-    @Override
     public User getOneById(Integer id) {
         return userRepository.findById(id).orElseThrow(CustomResourceNotFoundException::new);
     }

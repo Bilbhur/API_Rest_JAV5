@@ -26,14 +26,6 @@ public class ProductController {
         return productService.getList(page, limit);
     }
 
-    @GetMapping("/search/findByCategoryId")
-    @ResponseStatus(HttpStatus.OK)
-    public Page<Product> getListByCategoryId(@RequestParam(defaultValue = "1") Long id,
-                                             @RequestParam(defaultValue = "0") Integer page,
-                                             @RequestParam(defaultValue = "10") Integer limit) {
-        return productService.getListByCategoryId(id, page, limit);
-    }
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Product> getOneById(@PathVariable("id") Integer id) {

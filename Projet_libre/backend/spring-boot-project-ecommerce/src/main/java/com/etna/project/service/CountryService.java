@@ -26,11 +26,6 @@ public class CountryService implements IModelService<Country>{
     }
 
     @Override
-    public Page<Product> getListByCategoryId(Long id, Integer page, Integer limit) {
-        return null;
-    }
-
-    @Override
     public Country getOneById(Integer id) {
         return countryRepository.findById(id).orElseThrow(CustomResourceNotFoundException::new);
     }
