@@ -27,13 +27,13 @@ import java.math.BigDecimal;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@WebAppConfiguration
-@ActiveProfiles(value = "test")
-@AutoConfigureMockMvc(addFilters = false)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class TestProductController {
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@WebAppConfiguration
+//@ActiveProfiles(value = "test")
+//@AutoConfigureMockMvc(addFilters = false)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class TestProductController extends SpringBootProjectEcommerceApplicationTests {
 
     @Autowired
     protected MockMvc mockMvc;
