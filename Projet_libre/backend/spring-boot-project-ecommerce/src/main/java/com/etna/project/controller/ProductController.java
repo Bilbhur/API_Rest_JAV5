@@ -5,6 +5,7 @@ import com.etna.project.entity.Product;
 import com.etna.project.service.ProductService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,14 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public List<Product> getList(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer limit) {
         return productService.getList(page, limit);
+    }
+
+    @GetMapping("/search/findByCategoryId")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<Product> getListByCategoryId(@RequestParam(defaultValue = "1") Long id,
+                                             @RequestParam(defaultValue = "0") Integer page,
+                                             @RequestParam(defaultValue = "10") Integer limit) {
+        return productService.getListByCategoryId(id, page, limit);
     }
 
     @GetMapping("/{id}")

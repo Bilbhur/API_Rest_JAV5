@@ -8,6 +8,7 @@ import com.etna.project.exception.CustomConflictException;
 import com.etna.project.exception.CustomInternalServerErrorException;
 import com.etna.project.exception.CustomResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,12 @@ public class ProductService implements IModelService<Product> {
     public List<Product> getList(Integer page, Integer limit) {
         PageRequest pageable = PageRequest.of(page, limit);
         return productRepository.getListByPage(pageable);
+    }
+
+    @Override
+    public Page<Product> getListByCategoryId(Long id, Integer page, Integer limit) {
+        PageRequest pageable = PageRequest.of(page, limit);
+        return productRepository.findByCategoryId(id, pageable);
     }
 
     @Override

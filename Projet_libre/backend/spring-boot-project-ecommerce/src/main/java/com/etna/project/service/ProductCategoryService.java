@@ -2,10 +2,12 @@ package com.etna.project.service;
 
 import com.etna.project.dao.ProductCategoryRepository;
 import com.etna.project.entity.Country;
+import com.etna.project.entity.Product;
 import com.etna.project.entity.ProductCategory;
 import com.etna.project.exception.CustomConflictException;
 import com.etna.project.exception.CustomResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,11 @@ public class ProductCategoryService implements IModelService<ProductCategory> {
     public List<ProductCategory> getList(Integer page, Integer limit) {
         PageRequest pageable = PageRequest.of(page, limit);
         return productCategoryRepository.getListByPage(pageable);
+    }
+
+    @Override
+    public Page<Product> getListByCategoryId(Long id, Integer page, Integer limit) {
+        return null;
     }
 
     @Override

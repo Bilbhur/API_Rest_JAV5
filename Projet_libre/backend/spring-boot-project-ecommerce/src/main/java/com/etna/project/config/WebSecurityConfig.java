@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             "/api/countries",
                             "/api/product-category", "/api/product-category/{id}",
                             "/api/products", "/api/products/{id}",
+                            "/api/products/search/findByCategoryId",
                             "/api/checkout/purchase").permitAll()
                     .anyRequest().authenticated().and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

@@ -29,6 +29,8 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(() => {
+      console.log("this.listProducts()");
+      console.log(this.products);
       this.listProducts();
     });
   }
@@ -74,10 +76,15 @@ export class ProductListComponent implements OnInit {
 
   processResult() {
     return data => {
-      this.products = data._embedded.products;
-      this.thePageNumber = data.page.number + 1;
-      this.thePageSize = data.page.size;
-      this.theTotalElements = data.page.totalElements;
+      // this.products = data._embedded.products;
+      // this.thePageNumber = data.page.number + 1;
+      // this.thePageSize = data.page.size;
+      // this.theTotalElements = data.page.totalElements;
+      console.log(data.content);
+      this.products = data.content;
+      this.thePageNumber = data.number + 1;
+      this.thePageSize = data.size;
+      this.theTotalElements = data.totalElements;
     };
   }
 
