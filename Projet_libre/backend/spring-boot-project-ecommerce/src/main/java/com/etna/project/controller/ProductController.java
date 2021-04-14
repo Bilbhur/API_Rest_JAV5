@@ -13,7 +13,7 @@ import java.util.List;
 
 @CrossOrigin("http://localhost:4200")
 @RestController
-@RequestMapping("/api/products/")
+@RequestMapping("/api/products")
 public class ProductController {
 
     @Autowired
@@ -25,7 +25,7 @@ public class ProductController {
         return productService.getList(page, limit);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Product> getOneById(@PathVariable("id") Integer id) {
         return new ResponseEntity(productService.getOneById(id), HttpStatus.OK);
@@ -38,14 +38,14 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Product> updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
         product = productService.update(id, product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Boolean deleteProduct(@PathVariable("id") Integer id) { return productService.delete(id);}
 

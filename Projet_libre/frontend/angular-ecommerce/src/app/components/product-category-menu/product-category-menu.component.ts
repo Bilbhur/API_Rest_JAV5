@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ProductCategory } from 'src/app/common/product-category';
 import { ProductService } from 'src/app/services/product.service';
@@ -11,7 +12,8 @@ export class ProductCategoryMenuComponent implements OnInit {
 
   productCategories: ProductCategory[];
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService,
+              private httpClient: HttpClient) { }
 
   ngOnInit() {
     this.listProductCategories();
@@ -19,9 +21,13 @@ export class ProductCategoryMenuComponent implements OnInit {
 
   listProductCategories() {
     
-    this.productService.getProductCategories().subscribe(
-      data => {
-        console.log('product Categories=' + JSON.stringify(data));
+    // this.productService.getProductCategories().subscribe(
+    //   data => {
+    //     this.productCategories = data;
+    //   }
+    // )
+    this.productService.getProductCategories().subscribe((
+      data: any[]) => {
         this.productCategories = data;
       }
     )

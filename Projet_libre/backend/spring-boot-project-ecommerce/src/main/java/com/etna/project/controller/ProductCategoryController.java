@@ -12,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin("http://localhost:4200")
 @RestController
-@RequestMapping("/api/product-category/")
+@RequestMapping("/api/product-category")
 public class ProductCategoryController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class ProductCategoryController {
         return productCategoryService.getList(page, limit);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ProductCategory> getOneById(@PathVariable("id") Integer id) {
         return new ResponseEntity(productCategoryService.getOneById(id), HttpStatus.OK);
@@ -37,7 +37,7 @@ public class ProductCategoryController {
         return new ResponseEntity<>(productCategory, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Boolean deleteProductCategory(@PathVariable("id") Integer id) {
         return productCategoryService.delete(id);

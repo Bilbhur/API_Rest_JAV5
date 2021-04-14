@@ -51,10 +51,14 @@ export class ProductService {
     );
   }
 
-  getProductCategories(): Observable<ProductCategory[]> {
-    return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
-      map(response => response._embedded.productCategory)
-    );
+  // get product-catagory
+  // getProductCategories(): Observable<ProductCategory[]> {
+  //   return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
+  //     map(response => response._embedded.productCategory)
+  //   );
+  // }
+  getProductCategories() {
+    return this.httpClient.get(this.categoryUrl)
   }
 
 }
