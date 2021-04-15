@@ -2,7 +2,6 @@ package com.etna.project.controller;
 
 import com.etna.project.dao.SearchRepository;
 import com.etna.project.entity.Product;
-import com.etna.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
