@@ -8,7 +8,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -33,6 +35,9 @@ public class User {
 
     @UpdateTimestamp
     private Date updatedDate;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private Set<Customer> customers;
 
     public User() {
 
@@ -95,6 +100,10 @@ public class User {
         this.updatedDate = updateDate;
     }
 
+    public Set<Customer> getCustomers() { return customers; }
+
+    public void setCustomers(Set<Customer> customers) { this.customers = customers; }
+
     @Override
     public String toString() {
         return "User{" +
@@ -117,6 +126,19 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), getRole(), getCreationDate(), getUpdatedDate());
+        return Objects.hash(getId(), getUsername(), getPassword(), getRole(), getCreationDate(), getUpdatedDate(), getCustomers());
+    }
+
+    public void add(Customer customer) {
+
+        if (customer != null) {
+
+            if (customers == null) {
+                customers = new HashSet<>();
+            }
+
+            customers.add(customer);
+            customer.setUser(this);
+        }
     }
 }
