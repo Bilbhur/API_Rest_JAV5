@@ -36,8 +36,9 @@ public class User {
     @UpdateTimestamp
     private Date updatedDate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private Set<Customer> customers;
+    @NotNull
+    @Column(nullable = false)
+    private String email;
 
     public User() {
 
@@ -100,9 +101,9 @@ public class User {
         this.updatedDate = updateDate;
     }
 
-    public Set<Customer> getCustomers() { return customers; }
+    public String getEmail() { return email; }
 
-    public void setCustomers(Set<Customer> customers) { this.customers = customers; }
+    public void setEmail(String email) { this.email = email; }
 
     @Override
     public String toString() {
@@ -110,6 +111,7 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", email=" + email +
                 ", role=" + role +
                 ", creationDate=" + creationDate +
                 ", updateDate=" + updatedDate +
@@ -121,24 +123,12 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) && getUsername().equals(user.getUsername()) && getPassword().equals(user.getPassword()) && getRole() == user.getRole() && Objects.equals(getCreationDate(), user.getCreationDate()) && Objects.equals(getUpdatedDate(), user.getUpdatedDate());
+        return getId() == user.getId() && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && getRole() == user.getRole() && Objects.equals(getCreationDate(), user.getCreationDate()) && Objects.equals(getUpdatedDate(), user.getUpdatedDate()) && Objects.equals(getEmail(), user.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername(), getPassword(), getRole(), getCreationDate(), getUpdatedDate(), getCustomers());
+        return Objects.hash(getId(), getUsername(), getPassword(), getEmail(), getRole(), getCreationDate(), getUpdatedDate());
     }
 
-    public void add(Customer customer) {
-
-        if (customer != null) {
-
-            if (customers == null) {
-                customers = new HashSet<>();
-            }
-
-            customers.add(customer);
-            customer.setUser(this);
-        }
-    }
 }
