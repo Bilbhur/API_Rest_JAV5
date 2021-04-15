@@ -23,13 +23,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@WebAppConfiguration
-@ActiveProfiles(value = "test")
-@AutoConfigureMockMvc(addFilters = false)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class TestProductCategoryController {
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@WebAppConfiguration
+//@ActiveProfiles(value = "test")
+//@AutoConfigureMockMvc(addFilters = false)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class TestProductCategoryController extends SpringBootProjectEcommerceApplicationTests{
 
     @Autowired
     protected MockMvc mockMvc;

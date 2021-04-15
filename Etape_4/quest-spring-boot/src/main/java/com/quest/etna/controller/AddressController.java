@@ -70,6 +70,7 @@ public class AddressController {
 	@GetMapping(value = "/address/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(code = HttpStatus.OK)
 	public Address getAddress() {
+
 		// TODO 
 		// check si id exist 
 			// si oui pass
