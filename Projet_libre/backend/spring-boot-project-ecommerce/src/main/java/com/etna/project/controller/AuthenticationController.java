@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 public class AuthenticationController {
 
